@@ -11,3 +11,6 @@ print(input("Dime tu apellido: "));
 edad=input("Cual es tu edad: ");
 print("Tu edad es: "+edad);
 print(input("Escribe tu nombre:")+" "+input("Escribe tu apellido:"))
+
+
+print("PRUEBA")
