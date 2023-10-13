@@ -1,0 +1,28 @@
+Soy un texto nuevo
+Bienvenido al curso de python
+Estamos probando escritura sobre un archivo.
+
+Hemos visto:
+
+*Tipos de datos
+*Métodos de los objetos
+*Funciones
+*Procesamiento de archivos
+Vamos, a empezar  el curso de Python
+Comenzemos
+
+Escritura
+de
+texto
+con
+writelines
+utilizando
+recorrido
+de
+lista en un for
+y saltando espacios
+
+
+Escritura de texto con writelines utilizando recorrido de lista en un for en una sola linea, añadiendo espacio entre palabras de la lista. 
+
+Soy un texto nuevo añadido al final del texto con permiso de solo escritura al final 'a'

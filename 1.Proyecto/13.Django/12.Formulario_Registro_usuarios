@@ -1,0 +1,98 @@
+#####################################################################################################################
+#####################################################################################################################
+                        Archivo views.py
+* Importamos 'FormView' de 'from django.views.generic.edit'; 'UserCreationForm' de 'from django.contrib.auth.forms'
+  y 'login' de 'from django.contrib.auth'
+* El método 'form_valid' en la clase 'PaginaRegistro' permite que cuando el usuario se registre, lo logue de una vez
+* El método 'get' se modifica para cuando el usuario este autenticado, se redirige a la página de tareas
+####################################################################################################################
+####################################################################################################################
+
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
+
+class PaginaRegistro(FormView):
+    template_name="base/registro.html"
+    form_class=UserCreationForm
+    redirect_authenticated_user=True
+    success_url = reverse_lazy('tareas')
+
+    def form_valid(self,form):
+        usuario=form.save()  #Lo que haya en el formulario lo guarda en una variable llamada usuario
+        if usuario is not None: #Si se registro un usuario, que se realice de una vez el logueo del usuario
+            login(self.request,usuario)
+        return super(PaginaRegistro,self).form_valid(form) #Retorna lo que hay en la instancia superior
+
+    #Redefinir método get para que el usuario una vez registrado no se pueda volver a registrar, sino que lo lleve a la página inicia de 'tareas' en este caso.
+    def get(self,*args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('tareas')
+        return super(PaginaRegistro,self).get(*args,**kwargs)  #Si no esta autenticado el usuario permite registrarse
+
+
+#####################################################################################################################
+#####################################################################################################################
+                        Archivo urls.py
+* Importamos la clase de PaginaRegistro para el registro de usuario
+####################################################################################################################
+####################################################################################################################
+
+from django.urls import path
+from .views import ListaPendientes, DetalleTarea,CrearTarea, EditarTarea, EliminarTarea, Logueo, PaginaRegistro
+from django.contrib.auth.views import LogoutView
+
+urlpatterns=[
+                ...
+                path('',ListaPendientes.as_view(),name='tareas'),
+                path('login/',Logueo.as_view(),name='login'),
+                path('registro/',PaginaRegistro.as_view(),name='registro'),
+                ....
+            ]
+
+
+#####################################################################################################################
+#####################################################################################################################
+                        Archivo login.html
+* En el formulario de lógin añadimos un link para ir a la vista de registro mediante un enlace <a>
+####################################################################################################################
+####################################################################################################################
+
+<h1>Ingresar</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Ingresar">
+</form>
+<p>No tiene una cuenta? <a href="{% url 'registro' %}">Registrate</a></p>
+
+#####################################################################################################################
+#####################################################################################################################
+                        Archivo registro.html
+* Formulario de registro, similar al formulario de login. Si ya tiene cuenta registrada, da la opcion de ir al login
+####################################################################################################################
+####################################################################################################################
+
+<h1>Registrarse</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Registrar">
+</form>
+<p>Ya tienes una cuenta? <a href="{% url 'login' %}">Ingresa</a></p>
+
+#####################################################################################################################
+#####################################################################################################################
+                        Archivo setting.py
+* Cambiar el lenguaje de los formulario en la opción 'LANGUAGE_CODE = 'es-col', en este caso a español Colombia
+####################################################################################################################
+####################################################################################################################
+...
+# Internationalization
+# https://docs.djangoproject.com/en/4.2/topics/i18n/
+
+LANGUAGE_CODE = 'es-col'
+
+TIME_ZONE = 'UTC'
+...

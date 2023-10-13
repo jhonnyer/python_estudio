@@ -1,0 +1,64 @@
+Entorno Virtual: Espacio del ordenador, podriamos llamarlo una carpeta que contiene sus propios paquetes
+y bibliotecas de Python por separado al resto de aplicaciones que se tengan instalado en el ordenador.
+
+Podriamos tener instalado en diferentes entornos virtuales con diferentes paquetes o versiones de
+paquetes instalados.
+
+Instalar módulo virtualenv:
+    * pip install virtualenv
+
+Ver todas las bibliotecas de Python instaladas en mi ordenador
+    * pip freeze
+
+Creamos carpeta donde vamos a  tener configurado los entornos en el ordenador (mis_entornos)
+Vamos a la carpeta de mis_entornos creada y creamos el primer entorno virtual.
+Ruta en mi caso: E:\Proyectos_Python\1.Proyecto\13.Django\mis_entornos\Proyecto1
+Comando crear entorno virtual:
+    * virtualenv p1
+
+Activar entorno virtual, al principio en el terminal aparece el nombre del entorno virtual:
+(p1) E:\Proyectos_Python\1.Proyecto\13.Django\mis_entornos\Proyecto1
+Comando:
+    * .\p1\Scripts\activate
+
+Si ejecuto el comando 'pip freeze' notamos que no tiene ninguna librería instalado porque es un entorno aparte.
+Por lo tanto, debo instalar en los entornos las librerias que necesito.
+
+Para desactivar un entorno virtual:
+    * deactivate
+
+Install Django
+    * pip install django
+
+verificar instalacion:
+    * pip freeze
+
+Crear carpeta directorio src para el proyecto
+    * mkdir src
+
+luego:
+    * cd src
+
+comenzar proyecto dentro de la carpeta src
+    * django-admin startproject proyecto
+
+NOTA: El archico 'manage.py'  es el archivo principal que tiene todas las ordenes de django para manejar el proyecto e instalar dependencias y demás
+
+Recomendable hacer migraciónes de bases de datos o modelos si existen:
+    * python manage.py migrate
+
+Crear usuario con perfil de admin para django, poner los datos solicitados despues de ejecutar el comando:
+    * python manage.py createsuperuser
+
+Iniciar srevidor
+    *   python manage.py runserver
+
+Ruta navegador aplicación:
+    * http://127.0.0.1:8000/
+
+Ruta navegador administrador:
+    * http://127.0.0.1:8000/admin
+
+Usuario creado temporalmente:
+    * Nombre: jhonnyer
+    * contraseña: JHONfer123*

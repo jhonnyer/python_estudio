@@ -1,0 +1,74 @@
+########################################################################################################
+########################################################################################################
+            Archivo views.py
+
+* Librería createView para crear formulario
+* Librería reverse_lazy para redireccionar a otra página una vez enviado el formulario de creación
+
+########################################################################################################
+########################################################################################################
+
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+
+class CrearTarea(CreateView):
+    model = Tarea
+    template_name = 'base/tarea_form.html'
+    fields='__all__'  #Incorpora todos los campos del modelo
+    success_url = reverse_lazy('tareas')
+
+
+
+########################################################################################################
+########################################################################################################
+            Archivo urls.py
+
+* Se importa el metodo CrearTarea de views.py y se crea la ruta.
+
+########################################################################################################
+########################################################################################################
+
+from .views import ListaPendientes, DetalleTarea,CrearTarea
+
+urlpatterns=[
+                path('',ListaPendientes.as_view(),name='tareas'),
+                path('tarea/<int:pk>',DetalleTarea.as_view(),name='tarea'),
+                path('crear-tarea/',CrearTarea.as_view(),name='crear-tarea')
+             ]
+
+
+########################################################################################################
+########################################################################################################
+            Vista tarea_list.html
+
+* Se crea el botón para crear una nueva tarea, que diriga a la ruta o vista 'crear-tarea'
+
+########################################################################################################
+########################################################################################################
+
+<h1>Lista de Pendientes</h1>
+<a href="{% url 'crear-tarea' %}">Crear Nueva Tarea</a>
+...
+...
+
+########################################################################################################
+########################################################################################################
+            Vista tarea_form.html
+
+* Se crea un formulario de creación de tareas utilizando 'form.as_p' que permite crear un formulario con
+  todos los campos indicados en el módelo relacionado con la vista, en este caso el módelo Tarea.
+
+* Se añade un botón para volver a la vista anterior de tareas.
+
+########################################################################################################
+########################################################################################################
+
+
+<h1>Formulario de Tareas</h1>
+<a href="{% url 'tareas' %}">Volver atrás</a>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Enviar">
+</form>

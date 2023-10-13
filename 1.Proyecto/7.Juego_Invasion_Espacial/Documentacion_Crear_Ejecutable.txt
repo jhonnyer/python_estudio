@@ -1,0 +1,13 @@
+pip installer pyinstaller
+
+pyinstaller --clean --onefile --windowed Invasión_Espacial.py
+
+Donde cada expresión significa lo siguiente:
+
+· --clean: elimina todos los archivos temporales y directorios creados por pyinstaller durante la construcción del archivo ejecutable.
+
+· --onefile: crea un archivo ejecutable que contiene todos los archivos necesarios para ejecutar el script, incluyendo los módulos y bibliotecas utilizadas por el script.
+
+· --windowed: crea un archivo ejecutable que se ejecuta en una ventana en lugar de en pantalla completa.
+
+· Invasión_Espacial.py: es el nombre del script Python que se va a convertir en un archivo ejecutable.

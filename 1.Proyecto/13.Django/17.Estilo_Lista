@@ -1,0 +1,88 @@
+#####################################################################################################################
+#####################################################################################################################
+                     Estilos Lista de Tareas
+* Modificamos la lista de tareas, en este caso, comentamos la tabla y empezamos  a utilizar div con estilos de clases
+
+* Biblioteca de iconos => https://www.toptal.com/designers/htmlarrows/symbols/
+####################################################################################################################
+####################################################################################################################
+
+
+<div class="envoltorio-items-tarea">
+    {% for tarea in tareas %}
+
+    <div class="envoltorio-tarea">
+        {% if tarea.completo %}
+        <div class="titulo-tarea">
+            <div class="icono-tarea-completa"></div>
+            <i><s><a href="{% url 'editar-tarea' tarea.id %}">{{tarea}}</a></s></i>
+        </div>
+        <a class="enlace-eliminar" href="{% url 'eliminar-tarea' tarea.id %}">&#x2A2F</a>
+        {% else %}
+        <div class="titulo-tarea">
+            <div class="icono-tarea-incompleta"></div>
+            <a href="{% url 'editar-tarea' tarea.id %}">{{tarea}}</a>
+        </div>
+        <a class="enlace-eliminar" href="{% url 'eliminar-tarea' tarea.id %}">&#x2A2F</a>
+        {% endif%}
+    </div>
+
+    {% empty %}
+
+    <h3>No hay elementos en esta lista</h3>
+
+    {% endfor %}
+</div>
+
+
+#####################################################################################################################
+#####################################################################################################################
+                     Estilos CSS pagina principal.html
+#####################################################################################################################
+#####################################################################################################################
+
+<style>
+
+    ...inicio
+
+   .envoltorio-tarea{
+       display:flex;
+       align-items:center;
+       justify-content:space-between;
+       padding:20px;
+       background-color: #ffffff;
+       border-top: 1px solid rgb(255,255,255);
+   }
+
+   .titulo-tarea{
+       display:flex;
+   }
+
+   .titulo-tarea a{
+       text-decoration:none;
+       color: #4b5156;
+       margin-left:10px;
+   }
+
+   .icono-tarea-completa{
+       height:20px;
+       width: 20px;
+       background-color: rgb(105,162,105);
+       border-radius:50px;
+   }
+
+   .icono-tarea-incompleta{
+       height:20px;
+       width: 20px;
+       background-color: rgb(218,218,218);
+       border-radius:50px;
+   }
+
+   .enlace-eliminar{
+       text-decoration:none;
+       font-weight:900;
+       color:#EA4220;
+       font-size:22px;
+       line-height:0;
+   }
+</style>

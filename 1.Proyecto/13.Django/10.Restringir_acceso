@@ -1,0 +1,79 @@
+########################################################################################################
+########################################################################################################
+                        Archivo setting.py
+* Debemos añadir una línea de LOGIN_URL despues de donde esta configurado STATIC_URL para indicar hacia
+  donde se debe redirigir un usuario en la vista cuando no esta logueado.
+########################################################################################################
+########################################################################################################
+...
+...
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+STATIC_URL = 'static/'
+
+LOGIN_URL='login'
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+########################################################################################################
+########################################################################################################
+                        Archivo views.py
+* Importamos 'LoginRequiredMixin' de 'from django.contrib.auth.mixins'
+* En cada método de las vistas que queremos restringir, debemos heredar de 'LoginRequiredMixin', y debe
+  estar ubicado como primer parámetro del método
+########################################################################################################
+########################################################################################################
+
+from django.shortcuts import render
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+class Logueo(LoginView):
+    template_name = "base/login.html"
+    field='__all__'
+    redirect_authenticated_user=True
+
+    def get_success_url(self):
+        return reverse_lazy('tareas')
+
+class ListaPendientes(LoginRequiredMixin, ListView):
+    model = Tarea
+    template_name = 'tarea_list.html'  # Reemplaza 'tarea_list.html' con la plantilla que deseas usar para mostrar los datos
+    context_object_name = 'tareas'  # Nombre del objeto de contexto en la plantilla (opcional) => hace referencia a la tabla o modelo (alias)
+    queryset = Tarea.objects.all()  # Define el conjunto de consultas que deseas mostrar
+
+
+class DetalleTarea(LoginRequiredMixin, DetailView):
+    model = Tarea
+    template_name = 'base/tarea_detail.html'
+    context_object_name = 'tarea'  # Nombre del objeto en la plantilla
+
+
+class CrearTarea(LoginRequiredMixin, CreateView):
+    model = Tarea
+    template_name = 'base/tarea_form.html'
+    fields='__all__'  #Incorpora todos los campos del modelo
+    success_url = reverse_lazy('tareas')
+
+
+class EditarTarea(LoginRequiredMixin, UpdateView):
+    model = Tarea
+    fields = '__all__'  # Incorpora todos los campos del modelo
+    success_url = reverse_lazy('tareas')
+
+class EliminarTarea(LoginRequiredMixin, DeleteView):
+    model = Tarea
+    context_object_name = 'tarea'  # Nombre del objeto en la plantilla
+    success_url = reverse_lazy('tareas')

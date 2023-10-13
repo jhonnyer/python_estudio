@@ -1,0 +1,85 @@
+########################################################################################################
+########################################################################################################
+1. Configurar la lista de vistas en el  archivo views.py de la aplicación (directorio) base.
+########################################################################################################
+########################################################################################################
+
+from django.shortcuts import render
+from django.views.generic.list import ListView
+from .models import Tarea
+
+#ListaPendientes hereda de ListView metodos para renderizar la vista
+class ListaPendientes(ListView):
+    models = Tarea
+    template_name = 'tarea_list.html'  # Reemplaza 'tu_template.html' con la plantilla que deseas usar para mostrar los datos
+    context_object_name = 'tareas'  # Nombre del objeto de contexto en la plantilla (opcional)
+    queryset = Tarea.objects.all()  # Define el conjunto de consultas que deseas mostrar
+
+
+########################################################################################################
+########################################################################################################
+2. Crear carpeta 'templates' dentro del directorio o aplicacion base.
+2.1. Dentro de templates crear un directorio base
+2.2. Crear templates .html a utilizar en las vistas
+
+Tener en cuenta como se recorre la lista de objetos de tarea. En caso que no encuentre un objeto
+{% empty %}, se da un mensaje que no existen elementos en la lista.
+########################################################################################################
+########################################################################################################
+
+<h1>Lista de Pendientes</h1>
+<table>
+    <tr>
+        <th>Elementos</th>
+    </tr>
+    {% for tarea in tareas %}
+    <tr>
+        <td>{{tarea.titulo}}</td>
+    </tr>
+    {% empty
+    <h3>No hay elementos en esta lista</
+    {% endfor %}
+</table>
+
+
+########################################################################################################
+########################################################################################################
+3. Registrar la carpeta templates en el archivo 'settings.py' del proyecto en la lista de TEMPLATES el
+   atributo DIRS.
+########################################################################################################
+########################################################################################################
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['E:\\Proyectos_Python\\1.Proyecto\\13.Django\\mis_entornos\\mi_web\\src\\proyecto\\base\\templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+########################################################################################################
+########################################################################################################
+4. Configurar 'urls.py' con las vistas definidas en este caso en la clase ListaPendientes.
+########################################################################################################
+########################################################################################################
+
+from django.shortcuts import render
+from django.views.generic.list import ListView
+from .models import Tarea
+
+#ListaPendientes hereda de ListView metodos para renderizar la vista
+class ListaPendientes(ListView):
+    models = Tarea
+    template_name = 'tarea_list.html'  # Reemplaza 'tarea_list.html' con la plantilla que deseas usar para mostrar los datos
+    context_object_name = 'tareas'  # Nombre del objeto de contexto en la plantilla (opcional)
+    queryset = Tarea.objects.all()  # Define el conjunto de consultas que deseas mostrar
+
+

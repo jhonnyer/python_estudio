@@ -1,0 +1,49 @@
+Cargar el proyecto en una nueva ventana de PyCharm
+
+Abrir un terminal de windows de la siguiente manera en PyCharm:
+    * view ->
+            Tools Windows ->
+                            Terminal
+
+Activar ambiente virtual:
+    * .\web\Scripts\activate
+
+Crear nueva aplicación:
+    * python manage.py startapp base
+
+Lanzar servidor:
+    * python manage.py runserver
+
+Registrar la aplicación en django en nuestro proyecto:
+ 1. Ingresar en el archivo 'settings.py'.
+ 2. En la opción INSTALLED_APPS=[...] se debe registrar la aplicación creada anteriormente aso:
+    *   'base.apps.BaseConfig',   => Esta opcion indica que estamos registrando nuestra aplicacion base app, y BaseConfig se optiene de la carpeta base el archivo app.py
+
+
+Crear archivo 'urls.py' de mi aplicación o directorio base (click derecho, crear nuevo archivo.py)
+
+En el archivo 'urls.py' de mi aplicación base, importamos librerias y creamos lista de rutas a utilizar:
+
+    from django.urls import path
+    from . import views
+
+    urlpatterns=[path('',views.lista_pendientes,name='pendientes')]
+
+En el archivo 'views.py' de mi aplicación base importamos HttpResponse y creamos mi métodos de la vista
+
+    from django.shortcuts import render
+    from django.http import HttpResponse
+
+    def lista_pendientes(pedido):
+        return HttpResponse('Lista de pendientes')
+
+Registramos o incluimos nuestras rutas de la aplicación base en el archivo 'urls.py' de mi proyecto.
+Para ello, debemos importar de django la libreria include, luego incluir las rutas de mi directorio base.urls:
+
+    from django.contrib import admin
+    from django.urls import path, include
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('',include('base.urls')),
+    ]

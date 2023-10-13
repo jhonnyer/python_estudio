@@ -1,0 +1,125 @@
+#####################################################################################################################
+#####################################################################################################################
+                     Estilos vista formulario de tareas
+* Los estilos 'barra-superior', 'cuerpo-tarjeta' y 'button' son aplicados en todos los formularios que tiene la
+  aplicación.
+#####################################################################################################################
+#####################################################################################################################
+
+{% extends 'base/principal.html' %}
+{% block content %}
+
+<div class="barra-superior">
+    <a href="{% url 'tareas' %}">&#x1F860; Volver</a>
+</div>
+
+<div class="cuerpo-tarjeta">
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input class="button" type="submit" value="Enviar">
+    </form>
+</div>
+
+{% endblock content %}
+
+#####################################################################################################################
+#####################################################################################################################
+                     Estilos vista formulario de registro de usuarios
+#####################################################################################################################
+#####################################################################################################################
+
+{% extends 'base/principal.html' %}
+{% block content %}
+
+<div class="barra-superior">
+    <h1>Registrarse</h1>
+</div>
+
+<div class="cuerpo-tarjeta">
+    <form method="POST">
+        {% csrf_token %}
+        <label>{{form.username.label}}</label>
+        {{form.username}}
+        <label>{{form.password1.label}}</label>
+        {{form.password1}}
+        <label>{{form.password2.label}}</label>
+        {{form.password2}}
+        <input style="margin-top:10px;" class="button" type="submit" value="Registrar">
+    </form>
+    <p>Ya tienes una cuenta? <a href="{% url 'login' %}">Ingresa</a></p>
+</div>
+
+{% endblock content %}
+
+
+
+#####################################################################################################################
+#####################################################################################################################
+                     Estilos vista formulario de login
+#####################################################################################################################
+#####################################################################################################################
+
+
+{% extends 'base/principal.html' %}
+{% block content %}
+
+<div class="barra-superior">
+    <h1>Ingresar</h1>
+</div>
+
+<div class="cuerpo-tarjeta">
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Ingresar">
+    </form>
+    <p>No tiene una cuenta? <a href="{% url 'registro' %}">Registrate</a></p>
+</div>
+
+{% endblock content %}
+
+
+
+#####################################################################################################################
+#####################################################################################################################
+                     Estilos página principal
+#####################################################################################################################
+#####################################################################################################################
+
+
+</style>
+
+    ...inicio
+
+    .barra-superior{
+        display:flex;
+        justify-content:space-between;
+        color:#ffffff;
+        padding:10px;
+        border-radius:5px 5px 0 0;
+        background: linear-gradient(90deg, #4D9FE3 0%, #3A8ACC 43%, #3A8ACC 100% );
+    }
+
+    .barra-superior a{
+        color: rgb(255,255,255);
+        text-decoration:none;
+    }
+
+    .button{
+        border:1px solid #EB796F;
+        background-color: #FAFAFA;
+        color: #EB796F;
+        padding:10px;
+        font-size:14px;
+        border-radius:5px;
+        cursos:pointer;
+        text-decoration:none;
+    }
+
+    .cuerpo-tarjeta{
+        padding:20px
+    }
+
+    ...continue
+</style>

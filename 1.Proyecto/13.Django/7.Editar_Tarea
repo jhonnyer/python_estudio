@@ -1,0 +1,67 @@
+########################################################################################################
+########################################################################################################
+            Archivo views.py
+
+* Método para actualizar una tarea utilizando 'UpdateView'
+
+########################################################################################################
+########################################################################################################
+
+from django.views.generic.edit import CreateView, UpdateView
+
+class EditarTarea(UpdateView):
+    model = Tarea
+    fields = '__all__'  # Incorpora todos los campos del modelo
+    success_url = reverse_lazy('tareas')
+
+
+########################################################################################################
+########################################################################################################
+            Archivo tareas_list.html
+
+* Se añade en la tabla columna de editar tarea.
+
+########################################################################################################
+########################################################################################################
+
+<h1>Lista de Pendientes</h1>
+<a href="{% url 'crear-tarea' %}">Crear Nueva Tarea</a>
+<table>
+    <tr>
+        <th>Elementos</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for tarea in tareas %}
+    <tr>
+        <td>{{tarea.titulo}}</td>
+        <td><a href="{% url 'tarea' tarea.id %}">Ver</a></td>
+        <td><a href="{% url 'editar-tarea' tarea.id %}">Editar</a></td>
+    </tr>
+    {% empty %}
+
+    <h3>No hay elementos en esta lista</h3>
+   {% endfor %}
+</table>
+
+########################################################################################################
+########################################################################################################
+            Archivo urls.py
+
+* Se importa el método 'EditarTarea' del archivo views.py para editar tareas. Este método por debajo
+  utiliza la vista de crear tarea
+
+########################################################################################################
+########################################################################################################
+
+from django.urls import path
+from .views import ListaPendientes, DetalleTarea,CrearTarea, EditarTarea
+
+urlpatterns=[
+                path('',ListaPendientes.as_view(),name='tareas'),
+                path('tarea/<int:pk>',DetalleTarea.as_view(),name='tarea'),
+                path('crear-tarea/',CrearTarea.as_view(),name='crear-tarea'),
+                path('editar-tarea/<int:pk>',EditarTarea.as_view(),name='editar-tarea'),
+             ]
+
+

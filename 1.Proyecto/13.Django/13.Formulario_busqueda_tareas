@@ -1,0 +1,49 @@
+#####################################################################################################################
+#####################################################################################################################
+                        Archivo views.py
+* Añadimos filtro para buscar un valor especifico en la lista de tareas en este caso y almacenamos en una variable
+  llamada 'valor_buscado'. El filtro se toma del texto ingresado en un formulario con input de nombre: 'area-buscar'
+  Si el valor buscado se encuentra o es '', mostramos las tareas que correspondan con el filtro modificando en este
+  caso el context.
+* Adicionalmente, con el context asignamos al value 'valor_buscado' del input, el valor buscado como tal escrito por
+  el usuario en el input
+####################################################################################################################
+####################################################################################################################
+
+class ListaPendientes(LoginRequiredMixin, ListView):
+    model = Tarea
+    template_name = 'tarea_list.html'  # Reemplaza 'tarea_list.html' con la plantilla que deseas usar para mostrar los datos
+    context_object_name = 'tareas'  # Nombre del objeto de contexto en la plantilla (opcional) => hace referencia a la tabla o modelo (alias)
+    queryset = Tarea.objects.all()  # Define el conjunto de consultas que deseas mostrar
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['tareas']=context['tareas'].filter(usuario=self.request.user)
+        context['count'] = context['tareas'].filter(completo=False).count()
+
+        valor_buscado=self.request.GET.get('area-buscar') or ''
+        if valor_buscado:
+            context['tareas']=context['tareas'].filter(titulo__icontains=valor_buscado)
+        context['valor_buscado']=valor_buscado
+        return context
+
+
+
+#####################################################################################################################
+#####################################################################################################################
+                        Archivo tarea_list.html
+* Creamos el formulario de busqueda de una tarea en especifica. El valor del input con nombre 'area_buscar' será
+  capturado en el método 'get_context_data' de la clase 'ListaPendientes' y se le aplicará el filtro.
+####################################################################################################################
+####################################################################################################################
+
+...
+<h1>Lista de Pendientes</h1>
+<a href="{% url 'crear-tarea' %}">Crear Nueva Tarea</a>
+
+<form action="" method="GET">
+    <input type="text" name="area-buscar" value="{{valor_buscado}}">
+    <input type="submit" value="Buscar">
+</form>
+
+...

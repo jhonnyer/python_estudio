@@ -1,0 +1,53 @@
+#####################################################################################################################
+#####################################################################################################################
+                        Archivo principal.html
+* Plantilla HTML con los estilos CSS principales aplicados a la plataforma, en este caso Background
+* Para el body de la página(vista) en un container colocamos el bloque de contenido block content
+####################################################################################################################
+####################################################################################################################
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pendientes</title>
+    <style>
+        body {
+            background-color:aqua;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% block content %}
+
+        {% endblock content %}
+    </div>
+</body>
+</html>
+
+
+#####################################################################################################################
+#####################################################################################################################
+                        Utilizar los estilos de la página principal en las vistas
+* Debemos extender de la plantilla principal
+* Luego indicamos que para el body hace parte del block content, añadimos todo el bloque de contenido de nuestra
+  página.
+####################################################################################################################
+####################################################################################################################
+
+
+{% extends 'base/principal.html' %}
+{% block content %}
+
+<h1>Ingresar</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Ingresar">
+</form>
+<p>No tiene una cuenta? <a href="{% url 'registro' %}">Registrate</a></p>
+
+{% endblock content %}
+

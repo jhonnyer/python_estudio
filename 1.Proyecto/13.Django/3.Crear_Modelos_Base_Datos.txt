@@ -1,0 +1,57 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+En mi archivo models.py de la aplicacion o directoio base se crean los modelos.
+En el siguiente ejemplo, utilizamos la tabla User que tiene Django por defecto y se
+incluye como una clase foranea en la clase Tarea, cada clase representa una tabla en DB.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+from django.db import models
+from django.contrib.auth.models import User
+
+class Tarea(models.Model):
+    usuario= models.ForeignKey(User,
+                               on_delete=models.CASCADE(),
+                               null=True,
+                               blank=True) #Llave externa
+    titulo= models.CharField(max_length=200) #Campo de caracteres
+    descripcion=models.TextField(null=True,
+                                 blank=True) #Campo de texto
+    completo= models.BooleanField(default=False)
+    creado=models.DateTimeField(auto_now_add=True) #Se genere automaticamente cuando se crea
+
+    def __str__(self):
+        return self.titulo
+
+    #Cuando se pidan las tareas se ordene por medio del campo completo
+    class Meta:
+        ordering=['completo']
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                            Realizar la migracion
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    * python manage.py makemigrations   # Crea archivo de migración
+    * python manage.py migrate          # Realiza la migración
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                            Registrar modelos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+En el archivo 'admin.py' de mi aplicación base registrar los modelos, en este caso Tarea.
+
+    from django.contrib import admin
+    from .models import Tarea
+
+    admin.site.register(Tarea)
+
+Ejecutar la aplicación:
+
+    * python manage.py runserver
+
+NOTA: En mi interfaz de administración http://127.0.0.1:8000/admin podemos ver la tabla Tarea,
+pero aun no en el sitio, se pueden agregar Tareas en mi app de aministración.

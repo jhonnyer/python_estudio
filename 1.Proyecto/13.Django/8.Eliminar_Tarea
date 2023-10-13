@@ -1,0 +1,89 @@
+
+########################################################################################################
+########################################################################################################
+            Archivo views.py
+* Utilizar 'DeleteView' de 'from django.views.generic.edit'
+########################################################################################################
+########################################################################################################
+
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+
+class EliminarTarea(DeleteView):
+    model = Tarea
+    context_object_name = 'tarea'  # Nombre del objeto en la plantilla
+    success_url = reverse_lazy('tareas')
+
+
+########################################################################################################
+########################################################################################################
+            Vista tarea_list.html
+* Añadir en la tabla la opción de eliminar una tarea
+########################################################################################################
+########################################################################################################
+
+
+<h1>Lista de Pendientes</h1>
+<a href="{% url 'crear-tarea' %}">Crear Nueva Tarea</a>
+<table>
+    <tr>
+        <th>Elementos</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for tarea in tareas %}
+    <tr>
+        <td>{{tarea.titulo}}</td>
+        <td><a href="{% url 'tarea' tarea.id %}">Ver</a></td>
+        <td><a href="{% url 'editar-tarea' tarea.id %}">Editar</a></td>
+        <td><a href="{% url 'eliminar-tarea' tarea.id %}">Eliminar</a></td>
+    </tr>
+
+    {% empty %}
+
+     <h3>No hay elementos en esta lista</h3>
+
+    {% endfor %}
+</table>
+
+
+########################################################################################################
+########################################################################################################
+            Archivo urls.py
+* Se añade ruta para eliminar una tarea, en este caso a la vista 'eliminar-tarea' que recibe el id de la
+  tarea a eliminar
+########################################################################################################
+########################################################################################################
+
+from django.urls import path
+from .views import ListaPendientes, DetalleTarea,CrearTarea, EditarTarea, EliminarTarea
+
+#from . import views
+#urlpatterns=[path('',views.lista_pendientes,name='pendientes')]
+
+urlpatterns=[
+                path('',ListaPendientes.as_view(),name='tareas'),
+                path('tarea/<int:pk>',DetalleTarea.as_view(),name='tarea'),
+                path('crear-tarea/',CrearTarea.as_view(),name='crear-tarea'),
+                path('editar-tarea/<int:pk>',EditarTarea.as_view(),name='editar-tarea'),
+                path('eliminar-tarea/<int:pk>',EliminarTarea.as_view(),name='eliminar-tarea'),
+             ]
+
+
+
+
+########################################################################################################
+########################################################################################################
+            Vista tarea_confirm_delete.html
+* Vista de confirmación de eliminar una tarea, con boton hacia atrás
+########################################################################################################
+########################################################################################################
+
+<a href="{% url 'tareas' %}">Volver</a>
+
+<form method="POST">
+    {% csrf_token %}
+    <p>Vas a eliminar la tarea: "{{tarea}}"</p>
+    <input type="submit" value="Eliminar">
+</form>

@@ -1,0 +1,94 @@
+#####################################################################################################################
+#####################################################################################################################
+                     Estilos Barra Superior
+* Modificamos el archivo tareas_list.html donde vamos a crear la barra superior, creamos una clase de estilos
+ llamada 'barra-superior' a la cual se le aplican estilos CSS.
+* La opción tarea{{count|pluralize}} indica que si el contador es 1, maneje una sola tarea, si es mas maneje en
+  plural, es decir por ejemplo 2 tareas.
+####################################################################################################################
+####################################################################################################################
+
+
+{% extends 'base/principal.html' %}
+{% block content %}
+
+<div class="barra-superior">
+    <div>
+        <h1>Hola {{request.user|title}}</h1>
+        <h3 style="margin:0">Tienes <i>{{count}} tarea{{count|pluralize}} incompleta{{count|pluralize}}</i></h3>
+    </div>
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}">Salir</a>
+    {% else %}
+    <a href="{% url 'login' %}">Ingresar</a>
+    {% endif %}
+</div>
+
+....continue
+
+#####################################################################################################################
+#####################################################################################################################
+                     Estilos Aplicados en la plantilla principal.html
+* Creamos los estilos para la clase 'barra-superior' y la etiqueta a en este caso
+####################################################################################################################
+####################################################################################################################
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pendientes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&family=Lato:ital,wght@1,300&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #E5D4D1;
+            font-family: 'Abel', sans-serif;
+            padding-top: 60px;
+        }
+
+        .container{
+            max-width: 550px;
+            margin:auto;
+            background-color: #E1DFDE;
+            -webkit-box-shadow: 2px 2px 13px -4px rgba(0,0,0,0.21);
+            box-shadow: 2px 2px 13px -4px rgba(0,0,0,0.21);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6{
+            font-family: 'Lato', sans-serif;
+        }
+
+        a,
+        p{
+            color: #996E66
+        }
+
+        .barra-superior{
+            display:flex;
+            justify-content:space-between;
+            color:#ffffff;
+            padding:10px;
+            border-radius:5px 5px 0 0;
+            background: linear-gradient(90deg, #4D9FE3 0%, #3A8ACC 43%, #3A8ACC 100% );
+        }
+
+        .barra-superior a{
+            color: rgb(255,255,255);
+            text-decoration:none;
+        }
+    </style>
+</head>
+
+.... continue
